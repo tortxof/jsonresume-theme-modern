@@ -2,15 +2,16 @@ var fs = require('fs');
 var gravatar = require('gravatar');
 var _ = require('lodash')
 var Mustache = require('mustache');
+var moment = require('moment');
 
 function render(resumeObject) {
 
 
 	_.each(resumeObject.work, function(w){
-		w.startDateYear = w.startDate.substr(0,4);
+		w.startDateYear = moment(w.startDate).format("MMM YYYY");
 		if(w.endDate) {
-			w.endDateYear = w.endDate.substr(0,4);
-		} else { 
+			w.endDateYear = moment(w.endDate).format("MMM YYYY");
+		} else {
 			w.endDateYear = 'Present'
 		}
 	});
@@ -20,10 +21,10 @@ function render(resumeObject) {
     }  else {
       e.educationDetail = e.area + ", "+ e.studyType;
     }
-		e.startDateYear = e.startDate.substr(0,4);
+		e.startDateYear = moment(e.startDate).format("MMM YYYY");
 		if(e.endDate) {
-			e.endDateYear = e.endDate.substr(0,4);
-		}  else { 
+			e.endDateYear = moment(e.endDate).format("MMM YYYY");
+		}  else {
 			e.endDateYear = 'Present'
 		}
 	});
@@ -42,7 +43,7 @@ function render(resumeObject) {
 	console.log(resumeObject.profiles);
 	var theme = fs.readFileSync(__dirname + '/resume.template', 'utf8');
 	var resumeHTML = Mustache.render(theme, resumeObject);
-	
+
 
 	return resumeHTML;
 };
